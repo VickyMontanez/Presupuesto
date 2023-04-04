@@ -31,7 +31,7 @@ export default{
 
         const ws = new Worker("../storage/wsForm.js", {type:"module"})
         let id = [];
-        
+        let count = 0;
         let table = ()=>{
             document.querySelector('#tablaIng').innerHTML = "";
             let contIng = 0;
