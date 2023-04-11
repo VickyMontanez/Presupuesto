@@ -1,3 +1,4 @@
+import form from "../storage/config.js"
 export default{
     showForm(){
         let formulario = document.querySelector("#formulario");
@@ -5,6 +6,9 @@ export default{
             ingresos:[],
             egresos:[],
         };
+        let contIng = 0;
+        let contEgr = 0;
+        let Total;
 
         formulario.addEventListener("submit",(e)=>{
             e.preventDefault();
@@ -29,12 +33,8 @@ export default{
             formulario.reset();
         });
 
-        const ws = new Worker("../storage/wsForm.js", {type:"module"})
-        let id = [];
-        let count = 0;
         let table = ()=>{
             document.querySelector('#tablaIng').innerHTML = "";
-            let contIng = 0;
             infoForm.ingresos.forEach((val,id)=>{
                 document.querySelector('#tablaIng').insertAdjacentHTML("beforeend",
                 `<tr>
@@ -46,7 +46,6 @@ export default{
     
             });
             document.querySelector('#tablaEgr').innerHTML = "";
-            let contEgr = 0;
             infoForm.egresos.forEach((val,id)=>{
                 document.querySelector('#tablaEgr').insertAdjacentHTML("beforeend",
                 `<tr>
@@ -55,9 +54,26 @@ export default{
                 </tr>`);
                 contEgr = contEgr + Number(val.valor);
                 document.querySelector('#mostEgr').textContent = `${contEgr}`
-    });
+            });
+
+            Total = contIng - contEgr;
         }
 
-}
+        const ws = new Worker("storage/wsForm.js", {type:"module"});
+        let id = [];
+        let count = 0;
+        id.push("#inicio")
+        ws.postMessage({module:"showInicio", data: Total});
+        ws.addEventListener("message", (e) =>{
+
+            let doc = new DOMParser().parseFromString(e.data, "text/html");
+            let dom = document.querySelector(id[count]);
+            dom.innerHTML = null
+            dom.append(...doc.body.children);
+            (id.length-1 == count) ? ws.terminate() :count++
+            
+        })
+        return infoForm
+    }
 
 }
