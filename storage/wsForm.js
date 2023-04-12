@@ -21,17 +21,17 @@ let wsForm ={
         let plantilla = `<div class="row d-flex justify-content-center">
                             <div class="col-12 d-flex text-center flex-column mt-3  pt-5 mb-4" style="color: white;">
                                 <h1>Presupuesto Disponible</h1>
-                                <span>-----------------</span>
+                                <span id="disponible" class="fs-3">000000</span>
                             </div>
-                            <div class="col-3 align-items-center">
+                            <div class="col-3 col-sm-4 align-items-center">
                                 <div class="d-grid gap-3">
                                     <div class="p-3 bg-success rounded-3 d-flex justify-content-between">
                                         <p class="fw-bolder text-white">INGRESOS</p>
-                                        <h6 id="mostIng"><span class="badge bg-secondary">New</span></h6>
+                                        <h6 id="mostIng" class="text-white">000000</h6>
                                     </div>
                                     <div class="p-3 bg-danger rounded-3 d-flex justify-content-between">
                                         <p class="fw-bolder text-white">EGRESOS</p>
-                                        <h6 id="mostEgr"><span class="badge bg-secondary">New</span></h6>
+                                        <h6 id="mostEgr" class="text-white">000000</h6>
                                     </div>
                                 </div>
                             </div>
@@ -71,12 +71,14 @@ let wsForm ={
 
     showTable(){
         let plantilla = `
-            <div class="row d-flex justify-content-center">
+            <div class="row d-flex justify-content-center mt-3">
                 <div class="col-6 text-center">
                     <table class="table">
                         <thead>
                             <tr>
+                            <th style="color: green;">
                             <th scope="col" style="color: green ;">Ingresos</th>
+                            </th>
                             </tr>
                         </thead>
                         <tbody id="tablaIng">
@@ -87,7 +89,9 @@ let wsForm ={
                     <table class="table">
                         <thead>
                             <tr>
+                            <th style="color: red;">
                             <th scope="col" style="color: red;">Egresos</th>
+                            </th>
                             </tr>
                         </thead>
                         <tbody id="tablaEgr">
