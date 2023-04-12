@@ -6,3 +6,29 @@
     background-size: cover;
     height: 400px;
 }
+
+.eliminar{
+    display: none;
+}
+
+tr:nth-child(even):hover .eliminar{
+    display: block;
+}
+
+tr:nth-child(odd):hover .eliminar{
+    display: block;
+}
+
+tr:nth-child(even):hover .ing{
+    background-color: rgba(60, 136, 41, 0.39);
+}
+tr:nth-child(odd):hover .ing{
+    background-color: rgba(60, 136, 41, 0.39);
+}
+
+tr:nth-child(even):hover .egr{
+    background-color: rgba(165, 37, 37, 0.39);
+}
+tr:nth-child(odd):hover .egr{
+    background-color: rgba(165, 37, 37, 0.39);
+}
