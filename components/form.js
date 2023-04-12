@@ -1,4 +1,4 @@
-import form from "../storage/config.js"
+import config from "../storage/config.js"
 export default{
     showForm(){
         let formulario = document.querySelector("#formulario");
@@ -7,9 +7,10 @@ export default{
             egresos:[],
         }; 
         
-        let contIng = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }); 
-        let contEgr = new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' });
+        let contIng = 0; 
+        let contEgr = 0;
         let Total;
+        let porcentaje;
 
         formulario.addEventListener("submit",(e)=>{
             e.preventDefault();
@@ -31,7 +32,8 @@ export default{
                 contIng = infoForm["ingresos"].reduce(function(cont,value){
                     return Number(cont) + Number(value.valor)
                 },0);
-                document.querySelector('#mostIng').textContent =`${contIng}`
+                document.querySelector('#mostIng').textContent =`${contIng}`;
+
             }else if(data.Operación == "-"){
                 infoForm["egresos"].unshift({
                     operacion:`${data.Operación}`,
@@ -39,22 +41,33 @@ export default{
                     valor: `${data.Valor}`
                 });
                 document.querySelector('#tablaEgr').innerHTML = "";
-                infoForm.egresos
-                .forEach((val,id)=>{
+                contEgr = infoForm["egresos"].reduce(function(cont,value){
+                    return Number(cont) + Number(value.valor)
+                },0);
+                document.querySelector('#mostEgr').textContent =`${contEgr}`;
+
+                porcentaje = function porcent(n1, n2){
+                return (Number(n1)/ Number(n2)*100).toFixed(3)};
+                var porResultado = porcentaje(infoForm["egresos"][0]["valor"], contEgr);
+
+                infoForm.egresos.forEach((val,id)=>{
                 document.querySelector('#tablaEgr').insertAdjacentHTML("beforeend",
                     `<tr>
                         <td>${val.tipo}</td>
-                        <td>${val.valor}</td>
+                        <td>${val.valor}
+                            <span id="mostpor" class="badge bg-secondary">${porResultado}%</span>
+                        </td>
                     </tr>`); })
-                contEgr = infoForm["egresos"].reduce(function(cont,value){
-                        return Number(cont) + Number(value.valor)
-                },0);
-                document.querySelector('#mostEgr').textContent =`${contEgr}`
+
             }else{
                 alert("Escoge una opción valida")
             }
-/*             table(); */
-            console.log(infoForm);
+
+            Total = function dispo(n1, n2) {
+                return (Number(n1) - Number(n2));
+            }
+            var resultado = Total(contIng, contEgr)
+            document.querySelector('#disponible').textContent =`${resultado}`
             formulario.reset();
         });
 
@@ -82,4 +95,4 @@ export default{
         return infoForm;
     }
 
-}
+} 
